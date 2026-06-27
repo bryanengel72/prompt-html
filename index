@@ -1,0 +1,338 @@
+
+<style>
+*{box-sizing:border-box;margin:0;padding:0;}
+.app{font-family:var(--font-sans);padding:1.5rem 0;max-width:680px;}
+.top-bar{display:flex;align-items:center;justify-content:space-between;margin-bottom:1.25rem;}
+.app-title{font-size:18px;font-weight:500;color:var(--text-primary);}
+.app-sub{font-size:13px;color:var(--text-secondary);margin-top:2px;}
+.add-btn{background:var(--fill-accent);color:var(--on-accent);border:none;border-radius:8px;padding:7px 14px;font-size:13px;font-weight:500;cursor:pointer;display:flex;align-items:center;gap:6px;white-space:nowrap;}
+.add-btn:hover{opacity:0.9;}
+.toolbar{display:flex;gap:8px;margin-bottom:1rem;}
+.toolbar input{flex:1;border:0.5px solid var(--border);border-radius:8px;padding:7px 12px;font-size:13px;font-family:var(--font-sans);color:var(--text-primary);background:var(--surface-1);}
+.toolbar input:focus{outline:none;border-color:var(--border-accent);}
+.filter-row{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:1rem;}
+.filter-chip{font-size:12px;padding:4px 12px;border-radius:20px;border:0.5px solid var(--border);background:var(--surface-1);color:var(--text-secondary);cursor:pointer;}
+.filter-chip.active{background:var(--bg-accent);border-color:var(--border-accent);color:var(--text-accent);}
+.card{background:var(--surface-2);border:0.5px solid var(--border);border-radius:12px;padding:1rem 1.25rem;margin-bottom:8px;cursor:pointer;transition:border-color 0.12s;}
+.card:hover{border-color:var(--border-strong);}
+.card.expanded{border-color:var(--border-accent);}
+.card-header{display:flex;align-items:flex-start;gap:10px;}
+.card-icon{width:34px;height:34px;border-radius:8px;display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:16px;}
+.card-icon.gtm{background:var(--bg-accent);}
+.card-icon.gtm i{color:var(--text-accent);}
+.card-icon.post{background:var(--bg-success);}
+.card-icon.post i{color:var(--text-success);}
+.card-icon.product{background:var(--bg-pro);}
+.card-icon.product i{color:var(--text-pro);}
+.card-icon.eng{background:var(--bg-warning);}
+.card-icon.eng i{color:var(--text-warning);}
+.card-icon.all{background:var(--surface-1);}
+.card-icon.all i{color:var(--text-secondary);}
+.card-meta{flex:1;min-width:0;}
+.card-name{font-size:14px;font-weight:500;color:var(--text-primary);margin-bottom:2px;}
+.card-desc{font-size:12px;color:var(--text-secondary);line-height:1.4;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.card-right{display:flex;flex-direction:column;align-items:flex-end;gap:5px;flex-shrink:0;}
+.dept-badge{font-size:11px;padding:2px 8px;border-radius:4px;font-weight:500;}
+.dept-gtm{background:var(--bg-accent);color:var(--text-accent);border:0.5px solid var(--border-accent);}
+.dept-post{background:var(--bg-success);color:var(--text-success);border:0.5px solid var(--border-success);}
+.dept-product{background:var(--bg-pro);color:var(--text-pro);border:0.5px solid var(--border-pro);}
+.dept-eng{background:var(--bg-warning);color:var(--text-warning);border:0.5px solid var(--border-warning);}
+.dept-all{background:var(--surface-1);color:var(--text-secondary);border:0.5px solid var(--border);}
+.uses{font-size:11px;color:var(--text-muted);}
+.card-body{margin-top:1rem;padding-top:1rem;border-top:0.5px solid var(--border);display:none;}
+.card.expanded .card-body{display:block;}
+.prompt-block{background:var(--surface-1);border-radius:8px;padding:10px 12px;font-size:12px;font-family:var(--font-mono);color:var(--text-secondary);line-height:1.6;margin-bottom:10px;white-space:pre-wrap;word-break:break-word;}
+
+.cost-panel{background:var(--surface-1);border-radius:10px;padding:12px 14px;margin-bottom:12px;}
+.cost-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:10px;}
+.cost-title{font-size:12px;font-weight:500;color:var(--text-secondary);display:flex;align-items:center;gap:5px;}
+.model-select{font-size:12px;border:0.5px solid var(--border);border-radius:6px;padding:3px 8px;background:var(--surface-2);color:var(--text-primary);cursor:pointer;}
+.cost-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:10px;}
+.cost-cell{background:var(--surface-2);border-radius:6px;padding:8px 10px;}
+.cost-cell-label{font-size:11px;color:var(--text-muted);margin-bottom:3px;}
+.cost-cell-val{font-size:15px;font-weight:500;color:var(--text-primary);}
+.cost-cell-val.green{color:var(--text-success);}
+.cost-cell-val.amber{color:var(--text-warning);}
+.runs-row{display:flex;align-items:center;gap:10px;}
+.runs-label{font-size:12px;color:var(--text-secondary);white-space:nowrap;}
+.runs-row input[type=range]{flex:1;}
+.runs-val{font-size:12px;font-weight:500;color:var(--text-primary);min-width:80px;text-align:right;}
+.efficiency-bar{height:6px;border-radius:3px;background:var(--surface-2);margin-top:8px;overflow:hidden;}
+.efficiency-fill{height:100%;border-radius:3px;background:var(--fill-success);transition:width 0.2s;}
+
+.action-row{display:flex;gap:6px;flex-wrap:wrap;}
+.act-btn{font-size:12px;padding:5px 12px;border-radius:6px;border:0.5px solid var(--border-strong);background:transparent;color:var(--text-secondary);cursor:pointer;display:flex;align-items:center;gap:5px;}
+.act-btn:hover{background:var(--surface-1);}
+.act-btn.primary{background:var(--fill-accent);color:var(--on-accent);border-color:transparent;}
+.act-btn.primary:hover{opacity:0.88;}
+.ai-output{margin-top:10px;background:var(--surface-1);border-radius:8px;padding:10px 12px;font-size:13px;color:var(--text-secondary);line-height:1.6;display:none;min-height:40px;}
+.ai-output.visible{display:block;}
+.ai-label{font-size:11px;font-weight:500;color:var(--text-accent);margin-bottom:5px;display:flex;align-items:center;gap:4px;}
+.stats-row{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-bottom:1.25rem;}
+.stat{background:var(--surface-1);border-radius:8px;padding:10px 12px;}
+.stat-val{font-size:18px;font-weight:500;color:var(--text-primary);}
+.stat-lbl{font-size:11px;color:var(--text-muted);margin-top:2px;}
+.spinner{width:13px;height:13px;border:2px solid currentColor;border-top-color:transparent;border-radius:50%;animation:spin 0.7s linear infinite;display:inline-block;opacity:0.5;}
+@keyframes spin{to{transform:rotate(360deg);}}
+.modal-bg{display:none;position:fixed;inset:0;background:rgba(0,0,0,0.45);z-index:100;align-items:center;justify-content:center;}
+.modal-bg.open{display:flex;}
+.modal{background:var(--surface-2);border-radius:14px;border:0.5px solid var(--border);padding:1.5rem;width:min(520px,92vw);max-height:80vh;overflow-y:auto;}
+.modal-title{font-size:16px;font-weight:500;color:var(--text-primary);margin-bottom:1rem;}
+.form-row{margin-bottom:12px;}
+.form-label{font-size:12px;font-weight:500;color:var(--text-secondary);margin-bottom:5px;display:block;}
+.form-input{width:100%;border:0.5px solid var(--border);border-radius:8px;padding:8px 12px;font-size:13px;font-family:var(--font-sans);color:var(--text-primary);background:var(--surface-1);}
+.form-input:focus{outline:none;border-color:var(--border-accent);}
+textarea.form-input{min-height:80px;resize:vertical;font-family:var(--font-mono);}
+select.form-input{cursor:pointer;}
+.modal-actions{display:flex;justify-content:flex-end;gap:8px;margin-top:1rem;}
+.cancel-btn{padding:7px 14px;border-radius:8px;border:0.5px solid var(--border-strong);background:transparent;font-size:13px;color:var(--text-secondary);cursor:pointer;}
+.save-btn{padding:7px 16px;border-radius:8px;border:none;background:var(--fill-accent);color:var(--on-accent);font-size:13px;font-weight:500;cursor:pointer;}
+.empty{text-align:center;padding:2rem;color:var(--text-muted);font-size:13px;}
+</style>
+
+<div class="app">
+<h2 class="sr-only">Assort Health internal prompt and skill library with per-asset token cost estimator</h2>
+<div class="top-bar">
+  <div>
+    <div class="app-title">Prompt and skill library</div>
+    <div class="app-sub">Centralized AI assets for Assort teams</div>
+  </div>
+  <button class="add-btn" onclick="openModal()"><i class="ti ti-plus" aria-hidden="true"></i> Add asset</button>
+</div>
+
+<div class="stats-row" id="stats-row"></div>
+
+<div class="toolbar">
+  <input type="text" id="search" placeholder="Search prompts and skills..." oninput="render()">
+</div>
+<div class="filter-row" id="filter-row"></div>
+<div id="library-list"></div>
+</div>
+
+<div class="modal-bg" id="modal-bg" onclick="closeBg(event)">
+  <div class="modal">
+    <div class="modal-title">Add new asset</div>
+    <div class="form-row"><label class="form-label">Name</label><input class="form-input" id="f-name" placeholder="e.g. Discovery call summarizer"></div>
+    <div class="form-row"><label class="form-label">Department</label><select class="form-input" id="f-dept"><option>GTM</option><option>Post-Sales</option><option>Product</option><option>Engineering</option><option>All teams</option></select></div>
+    <div class="form-row"><label class="form-label">Description</label><input class="form-input" id="f-desc" placeholder="What does this do?"></div>
+    <div class="form-row"><label class="form-label">Prompt / template</label><textarea class="form-input" id="f-prompt" placeholder="Paste the prompt or skill template here..."></textarea></div>
+    <div class="modal-actions">
+      <button class="cancel-btn" onclick="closeModal()">Cancel</button>
+      <button class="save-btn" onclick="saveAsset()">Save asset</button>
+    </div>
+  </div>
+</div>
+
+<script>
+const MODELS = {
+  'Haiku 4.5':   {inputPer1M:0.80,  outputPer1M:4.00,  label:'Haiku 4.5'},
+  'Sonnet 4.6':  {inputPer1M:3.00,  outputPer1M:15.00, label:'Sonnet 4.6'},
+  'Opus 4.6':    {inputPer1M:15.00, outputPer1M:75.00, label:'Opus 4.6'},
+};
+
+const DEPT_ICON={GTM:'ti-trending-up','Post-Sales':'ti-headset',Product:'ti-bulb',Engineering:'ti-code','All teams':'ti-building'};
+const DEPT_CLS={GTM:'gtm','Post-Sales':'post',Product:'product',Engineering:'eng','All teams':'all'};
+const DEPT_BADGE={GTM:'dept-gtm','Post-Sales':'dept-post',Product:'dept-product',Engineering:'dept-eng','All teams':'dept-all'};
+
+function countTokens(text){
+  return Math.round((text||'').length/3.8);
+}
+
+let assets=[
+  {id:1,name:'Discovery call summarizer',dept:'GTM',desc:'Turns raw call transcripts into structured summaries with pain points, next steps, and champion signals.',prompt:`You are an expert sales analyst. Review the following discovery call transcript and return:\n\n1. Pain points (bullet list, ranked by urgency)\n2. Champion signals (who in the call showed internal motivation to buy)\n3. Next steps (specific, time-bound)\n4. Deal risk flags (anything that could stall the deal)\n\nKeep each section under 5 bullets. Be direct.\n\nTranscript:\n{{transcript}}`,uses:47,avgInputExtra:1800,avgOutput:400},
+  {id:2,name:'Onboarding gap detector',dept:'Post-Sales',desc:'Analyzes onboarding notes and flags patients or workflows at risk of drop-off before go-live.',prompt:`You are a healthcare customer success expert. Review the following onboarding notes and identify:\n\n1. At-risk items\n2. Stakeholder gaps\n3. Timeline risk\n4. Recommended actions\n\nOnboarding notes:\n{{notes}}`,uses:31,avgInputExtra:1200,avgOutput:350},
+  {id:3,name:'PRD first-draft generator',dept:'Product',desc:'Converts a feature brief or Slack thread into a structured PRD with success metrics and edge cases.',prompt:`You are a senior product manager at a healthcare AI company. Convert the following feature brief into a PRD with these sections:\n\n- Problem statement\n- Success metrics\n- User stories\n- Edge cases and failure modes\n- Out of scope\n\nBrief:\n{{brief}}`,uses:22,avgInputExtra:800,avgOutput:700},
+  {id:4,name:'Incident triage classifier',dept:'Engineering',desc:'Classifies inbound incident reports by severity, affected system, and suggested owner.',prompt:`You are an on-call engineer. Classify the following incident report and return JSON only:\n{\n  "severity": "P0|P1|P2|P3",\n  "affected_system": "<system name>",\n  "likely_owner": "<team or person>",\n  "summary": "<one sentence>",\n  "immediate_action": "<what to do right now>"\n}\n\nIncident report:\n{{report}}`,uses:18,avgInputExtra:400,avgOutput:120},
+  {id:5,name:'AI use case intake form',dept:'All teams',desc:'Structured prompt for any team member to submit a new AI automation idea for the roadmap.',prompt:`Fill out the following to submit an AI automation idea:\n\nWhat is the current process?\nHow often does it happen?\nHow many people are involved?\nWhat is the biggest pain point?\nWhat would success look like?\nAny data or systems involved?`,uses:64,avgInputExtra:600,avgOutput:500},
+];
+let nextId=6;
+let activeFilter='All';
+let expandedId=null;
+let runsMap={};
+let modelMap={};
+let aiOutputs={};
+
+function totalMonthlyCost(){
+  let total=0;
+  assets.forEach(a=>{
+    const model=modelMap[a.id]||'Sonnet 4.6';
+    const m=MODELS[model];
+    const runs=runsMap[a.id]||a.uses;
+    const promptTokens=countTokens(a.prompt);
+    const inputT=promptTokens+a.avgInputExtra;
+    const outputT=a.avgOutput;
+    total+=runs*((inputT/1000000)*m.inputPer1M+(outputT/1000000)*m.outputPer1M);
+  });
+  return total;
+}
+
+function render(){
+  const q=document.getElementById('search').value.toLowerCase();
+  const filtered=assets.filter(a=>{
+    const dOk=activeFilter==='All'||a.dept===activeFilter;
+    const qOk=!q||a.name.toLowerCase().includes(q)||a.desc.toLowerCase().includes(q);
+    return dOk&&qOk;
+  });
+  const totalUses=assets.reduce((s,a)=>s+a.uses,0);
+  const deptCount=new Set(assets.map(a=>a.dept)).size;
+  const monthlyCost=totalMonthlyCost();
+  document.getElementById('stats-row').innerHTML=`
+    <div class="stat"><div class="stat-val">${assets.length}</div><div class="stat-lbl">Total assets</div></div>
+    <div class="stat"><div class="stat-val">${deptCount}</div><div class="stat-lbl">Departments</div></div>
+    <div class="stat"><div class="stat-val">${totalUses}</div><div class="stat-lbl">Total uses</div></div>
+    <div class="stat"><div class="stat-val">$${monthlyCost.toFixed(2)}</div><div class="stat-lbl">Est. mo. cost</div></div>`;
+
+  const fr=document.getElementById('filter-row');
+  const depts=['All',...new Set(assets.map(a=>a.dept))];
+  fr.innerHTML=depts.map(d=>`<span class="filter-chip${d===activeFilter?' active':''}" onclick="setFilter('${d}')">${d}</span>`).join('');
+
+  const list=document.getElementById('library-list');
+  if(!filtered.length){list.innerHTML='<div class="empty">No assets match your search.</div>';return;}
+  list.innerHTML=filtered.map(a=>{
+    const cls=DEPT_CLS[a.dept]||'all';
+    const badge=DEPT_BADGE[a.dept]||'dept-all';
+    const icon=DEPT_ICON[a.dept]||'ti-file';
+    const isExp=expandedId===a.id;
+    const model=modelMap[a.id]||'Sonnet 4.6';
+    const m=MODELS[model];
+    const runs=runsMap[a.id]!=null?runsMap[a.id]:a.uses;
+    const promptTokens=countTokens(a.prompt);
+    const inputT=promptTokens+a.avgInputExtra;
+    const outputT=a.avgOutput;
+    const costPerRun=((inputT/1000000)*m.inputPer1M)+((outputT/1000000)*m.outputPer1M);
+    const monthlyEst=runs*costPerRun;
+    const haikuCost=runs*(((inputT/1000000)*0.80)+((outputT/1000000)*4.00));
+    const savings=monthlyEst-haikuCost;
+    const efficiencyPct=Math.round((1-(haikuCost/Math.max(monthlyEst,0.0001)))*100);
+    const costColor=monthlyEst<1?'green':monthlyEst<5?'amber':'';
+    const savedColor=savings>0?'amber':'green';
+    const aoKey='ai-'+a.id;
+    const savedHtml=aiOutputs[aoKey]?`<div class="ai-output visible" id="${aoKey}"><div class="ai-label"><i class="ti ti-sparkles" aria-hidden="true"></i> Claude</div><div id="ai-text-${a.id}">${aiOutputs[aoKey]}</div></div>`:`<div class="ai-output" id="${aoKey}"><div class="ai-label"><i class="ti ti-sparkles" aria-hidden="true"></i> Claude</div><div id="ai-text-${a.id}"></div></div>`;
+    return `<div class="card${isExp?' expanded':''}" id="card-${a.id}" onclick="toggleCard(${a.id})">
+      <div class="card-header">
+        <div class="card-icon ${cls}"><i class="ti ${icon}" aria-hidden="true"></i></div>
+        <div class="card-meta">
+          <div class="card-name">${a.name}</div>
+          <div class="card-desc">${a.desc}</div>
+        </div>
+        <div class="card-right">
+          <span class="dept-badge ${badge}">${a.dept}</span>
+          <span class="uses">${a.uses} uses</span>
+        </div>
+      </div>
+      <div class="card-body">
+        <div class="prompt-block">${escHtml(a.prompt)}</div>
+
+        <div class="cost-panel">
+          <div class="cost-header">
+            <span class="cost-title"><i class="ti ti-coin" aria-hidden="true"></i> Cost estimate</span>
+            <select class="model-select" id="model-${a.id}" onclick="event.stopPropagation()" onchange="setModel(${a.id},this.value)">
+              ${Object.keys(MODELS).map(k=>`<option${k===model?' selected':''}>${k}</option>`).join('')}
+            </select>
+          </div>
+          <div class="cost-grid">
+            <div class="cost-cell">
+              <div class="cost-cell-label">Cost per run</div>
+              <div class="cost-cell-val">$${costPerRun<0.001?costPerRun.toFixed(5):costPerRun.toFixed(4)}</div>
+            </div>
+            <div class="cost-cell">
+              <div class="cost-cell-label">Monthly est.</div>
+              <div class="cost-cell-val ${costColor}">$${monthlyEst.toFixed(2)}</div>
+            </div>
+            <div class="cost-cell">
+              <div class="cost-cell-label">vs. Haiku 4.5</div>
+              <div class="cost-cell-val ${savedColor}">${savings>0?'+$'+savings.toFixed(2):'-$'+Math.abs(savings).toFixed(2)}</div>
+            </div>
+          </div>
+          <div class="runs-row">
+            <span class="runs-label">Runs/month</span>
+            <input type="range" min="1" max="500" step="1" value="${runs}" onclick="event.stopPropagation()" oninput="setRuns(${a.id},this.value)">
+            <span class="runs-val">${runs} runs &middot; $${monthlyEst.toFixed(2)}</span>
+          </div>
+          ${model!=='Haiku 4.5'?`<div class="efficiency-bar"><div class="efficiency-fill" style="width:${Math.max(0,Math.min(100,efficiencyPct))}%"></div></div>
+          <div style="font-size:11px;color:var(--text-muted);margin-top:4px;">Switching to Haiku 4.5 saves ${efficiencyPct}% on this asset</div>`:'<div style="font-size:11px;color:var(--text-success);margin-top:8px;">Running on lowest-cost model</div>'}
+        </div>
+
+        <div class="action-row">
+          <button class="act-btn primary" onclick="event.stopPropagation();testPrompt(${a.id})"><i class="ti ti-player-play" aria-hidden="true"></i> Test with Claude</button>
+          <button class="act-btn" onclick="event.stopPropagation();copyPrompt(${a.id})"><i class="ti ti-copy" aria-hidden="true"></i> Copy</button>
+          <button class="act-btn" onclick="event.stopPropagation();improvePrompt(${a.id})"><i class="ti ti-sparkles" aria-hidden="true"></i> Improve</button>
+        </div>
+        ${savedHtml}
+      </div>
+    </div>`;
+  }).join('');
+}
+
+function escHtml(s){return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');}
+function setFilter(d){activeFilter=d;render();}
+function toggleCard(id){expandedId=expandedId===id?null:id;render();}
+
+function setModel(id,val){modelMap[id]=val;render();}
+function setRuns(id,val){runsMap[id]=parseInt(val);render();}
+
+function copyPrompt(id){
+  const a=assets.find(x=>x.id===id);
+  if(a)navigator.clipboard.writeText(a.prompt).catch(()=>{});
+}
+
+const SAMPLES={
+  1:'[Call with Mercy Health, Dr. Kim and ops lead Sarah. Pain: fax-based referrals taking 5 days. Sarah said she is the internal champion. Budget approved Q3.]',
+  2:'[Patient onboarding: demographics done, insurance not verified, portal login not sent, IT contact missing, go-live in 9 days]',
+  3:'[Allow providers to bulk-schedule follow-up calls via AI from the patient portal. Requested by 3 customers.]',
+  4:'[AI triage agent returning 503 errors on intake form submissions since 14:32 UTC. Affecting UCSF and Stanford accounts.]',
+  5:'[Team: Post-Sales. Process: manually emailing patients who missed appointments. Happens ~200x/day per client.]'
+};
+
+async function callClaude(id,systemPrompt,userContent){
+  const key='ai-'+id;
+  const out=document.getElementById(key);
+  const txt=document.getElementById('ai-text-'+id);
+  if(out){out.classList.add('visible');}
+  if(txt){txt.innerHTML='<div class="spinner"></div>';}
+  const model=modelMap[id]||'Sonnet 4.6';
+  const modelStr=model==='Haiku 4.5'?'claude-haiku-4-5-20251001':'claude-sonnet-4-6';
+  try{
+    const resp=await fetch('https://api.anthropic.com/v1/messages',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({model:modelStr,max_tokens:1000,messages:[{role:'user',content:systemPrompt+'\n\n'+userContent}]})});
+    const data=await resp.json();
+    const text=data.content.map(i=>i.text||'').join('').replace(/\*\*(.*?)\*\*/g,'<strong>$1</strong>').replace(/\n/g,'<br>');
+    if(txt){txt.innerHTML=text;}
+    aiOutputs[key]=text;
+    const a=assets.find(x=>x.id===id);
+    if(a){a.uses++;render();}
+  }catch(e){
+    if(txt){txt.textContent='Error: '+e.message;}
+  }
+}
+
+function testPrompt(id){
+  const a=assets.find(x=>x.id===id);
+  if(!a)return;
+  const filled=a.prompt.replace(/\{\{[^}]+\}\}/g,SAMPLES[id]||'[Sample input]');
+  callClaude(id,filled,'');
+}
+
+function improvePrompt(id){
+  const a=assets.find(x=>x.id===id);
+  if(!a)return;
+  callClaude(id,`You are a prompt engineering expert. Give 3 specific, actionable suggestions to improve this prompt's output quality and token efficiency. Be concise.\n\nPrompt:\n${a.prompt}`,'');
+}
+
+function openModal(){document.getElementById('modal-bg').classList.add('open');}
+function closeModal(){document.getElementById('modal-bg').classList.remove('open');['f-name','f-desc','f-prompt'].forEach(i=>document.getElementById(i).value='');}
+function closeBg(e){if(e.target===document.getElementById('modal-bg'))closeModal();}
+
+function saveAsset(){
+  const name=document.getElementById('f-name').value.trim();
+  const dept=document.getElementById('f-dept').value;
+  const desc=document.getElementById('f-desc').value.trim();
+  const prompt=document.getElementById('f-prompt').value.trim();
+  if(!name||!prompt)return;
+  const promptLen=countTokens(prompt);
+  assets.push({id:nextId++,name,dept,desc:desc||'No description.',prompt,uses:0,avgInputExtra:500,avgOutput:400});
+  closeModal();
+  render();
+}
+
+render();
+</script>
