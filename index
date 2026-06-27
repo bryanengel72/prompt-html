@@ -1,23 +1,62 @@
-
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Assort AI Prompt & Skill Library</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@3.14.0/dist/tabler-icons.min.css">
 <style>
+:root{
+  --surface-0:#f4f4f2;--surface-1:#ebebea;--surface-2:#ffffff;
+  --text-primary:#1a1a18;--text-secondary:#5f5e5a;--text-muted:#888780;
+  --border:rgba(0,0,0,0.09);--border-strong:rgba(0,0,0,0.15);
+  --bg-accent:#e6f1fb;--text-accent:#185fa5;--border-accent:#85b7eb;
+  --bg-success:#eaf3de;--text-success:#3b6d11;--border-success:#97c459;
+  --bg-warning:#faeeda;--text-warning:#854f0b;--border-warning:#ef9f27;
+  --bg-pro:#eeedfe;--text-pro:#534ab7;--border-pro:#afa9ec;
+  --fill-accent:#378add;--on-accent:#fff;
+  --fill-success:#639922;--on-success:#fff;
+  --radius:8px;
+  --font-sans:'Inter',system-ui,sans-serif;
+  --font-mono:'SF Mono','Fira Code',monospace;
+}
+@media(prefers-color-scheme:dark){
+  :root{
+    --surface-0:#1a1a18;--surface-1:#242422;--surface-2:#2e2e2c;
+    --text-primary:#f0ede8;--text-secondary:#a8a6a0;--text-muted:#6a6864;
+    --border:rgba(255,255,255,0.08);--border-strong:rgba(255,255,255,0.14);
+    --bg-accent:#0c447c;--text-accent:#85b7eb;--border-accent:#185fa5;
+    --bg-success:#27500a;--text-success:#c0dd97;--border-success:#3b6d11;
+    --bg-warning:#633806;--text-warning:#fac775;--border-warning:#854f0b;
+    --bg-pro:#3c3489;--text-pro:#cecbf6;--border-pro:#534ab7;
+    --fill-accent:#185fa5;--on-accent:#fff;
+  }
+}
 *{box-sizing:border-box;margin:0;padding:0;}
-.app{font-family:var(--font-sans);padding:1.5rem 0;max-width:680px;}
-.top-bar{display:flex;align-items:center;justify-content:space-between;margin-bottom:1.25rem;}
-.app-title{font-size:18px;font-weight:500;color:var(--text-primary);}
-.app-sub{font-size:13px;color:var(--text-secondary);margin-top:2px;}
-.add-btn{background:var(--fill-accent);color:var(--on-accent);border:none;border-radius:8px;padding:7px 14px;font-size:13px;font-weight:500;cursor:pointer;display:flex;align-items:center;gap:6px;white-space:nowrap;}
-.add-btn:hover{opacity:0.9;}
-.toolbar{display:flex;gap:8px;margin-bottom:1rem;}
-.toolbar input{flex:1;border:0.5px solid var(--border);border-radius:8px;padding:7px 12px;font-size:13px;font-family:var(--font-sans);color:var(--text-primary);background:var(--surface-1);}
+body{font-family:var(--font-sans);background:var(--surface-0);color:var(--text-primary);min-height:100vh;padding:2rem 1rem;}
+.container{max-width:760px;margin:0 auto;}
+.top-bar{display:flex;align-items:center;justify-content:space-between;margin-bottom:1.5rem;}
+.app-title{font-size:20px;font-weight:500;}
+.app-sub{font-size:13px;color:var(--text-secondary);margin-top:3px;}
+.add-btn{background:var(--fill-accent);color:var(--on-accent);border:none;border-radius:var(--radius);padding:8px 16px;font-size:13px;font-weight:500;cursor:pointer;display:flex;align-items:center;gap:6px;font-family:var(--font-sans);}
+.add-btn:hover{opacity:0.88;}
+.stats-row{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:1.5rem;}
+.stat{background:var(--surface-1);border-radius:var(--radius);padding:12px 14px;}
+.stat-val{font-size:20px;font-weight:500;}
+.stat-lbl{font-size:11px;color:var(--text-muted);margin-top:3px;}
+.toolbar{margin-bottom:1rem;}
+.toolbar input{width:100%;border:0.5px solid var(--border-strong);border-radius:var(--radius);padding:9px 14px;font-size:14px;font-family:var(--font-sans);color:var(--text-primary);background:var(--surface-2);}
 .toolbar input:focus{outline:none;border-color:var(--border-accent);}
 .filter-row{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:1rem;}
-.filter-chip{font-size:12px;padding:4px 12px;border-radius:20px;border:0.5px solid var(--border);background:var(--surface-1);color:var(--text-secondary);cursor:pointer;}
+.filter-chip{font-size:12px;padding:5px 14px;border-radius:20px;border:0.5px solid var(--border-strong);background:var(--surface-2);color:var(--text-secondary);cursor:pointer;font-family:var(--font-sans);}
 .filter-chip.active{background:var(--bg-accent);border-color:var(--border-accent);color:var(--text-accent);}
-.card{background:var(--surface-2);border:0.5px solid var(--border);border-radius:12px;padding:1rem 1.25rem;margin-bottom:8px;cursor:pointer;transition:border-color 0.12s;}
+.card{background:var(--surface-2);border:0.5px solid var(--border);border-radius:12px;padding:1rem 1.25rem;margin-bottom:10px;cursor:pointer;transition:border-color 0.12s;}
 .card:hover{border-color:var(--border-strong);}
 .card.expanded{border-color:var(--border-accent);}
-.card-header{display:flex;align-items:flex-start;gap:10px;}
-.card-icon{width:34px;height:34px;border-radius:8px;display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:16px;}
+.card-header{display:flex;align-items:flex-start;gap:12px;}
+.card-icon{width:36px;height:36px;border-radius:var(--radius);display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:17px;}
 .card-icon.gtm{background:var(--bg-accent);}
 .card-icon.gtm i{color:var(--text-accent);}
 .card-icon.post{background:var(--bg-success);}
@@ -29,84 +68,84 @@
 .card-icon.all{background:var(--surface-1);}
 .card-icon.all i{color:var(--text-secondary);}
 .card-meta{flex:1;min-width:0;}
-.card-name{font-size:14px;font-weight:500;color:var(--text-primary);margin-bottom:2px;}
+.card-name{font-size:14px;font-weight:500;margin-bottom:3px;}
 .card-desc{font-size:12px;color:var(--text-secondary);line-height:1.4;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
 .card-right{display:flex;flex-direction:column;align-items:flex-end;gap:5px;flex-shrink:0;}
-.dept-badge{font-size:11px;padding:2px 8px;border-radius:4px;font-weight:500;}
+.dept-badge{font-size:11px;padding:2px 9px;border-radius:4px;font-weight:500;white-space:nowrap;}
 .dept-gtm{background:var(--bg-accent);color:var(--text-accent);border:0.5px solid var(--border-accent);}
 .dept-post{background:var(--bg-success);color:var(--text-success);border:0.5px solid var(--border-success);}
 .dept-product{background:var(--bg-pro);color:var(--text-pro);border:0.5px solid var(--border-pro);}
 .dept-eng{background:var(--bg-warning);color:var(--text-warning);border:0.5px solid var(--border-warning);}
-.dept-all{background:var(--surface-1);color:var(--text-secondary);border:0.5px solid var(--border);}
+.dept-all{background:var(--surface-1);color:var(--text-secondary);border:0.5px solid var(--border-strong);}
 .uses{font-size:11px;color:var(--text-muted);}
 .card-body{margin-top:1rem;padding-top:1rem;border-top:0.5px solid var(--border);display:none;}
 .card.expanded .card-body{display:block;}
-.prompt-block{background:var(--surface-1);border-radius:8px;padding:10px 12px;font-size:12px;font-family:var(--font-mono);color:var(--text-secondary);line-height:1.6;margin-bottom:10px;white-space:pre-wrap;word-break:break-word;}
-
-.cost-panel{background:var(--surface-1);border-radius:10px;padding:12px 14px;margin-bottom:12px;}
-.cost-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:10px;}
+.prompt-block{background:var(--surface-0);border-radius:var(--radius);padding:10px 14px;font-size:12px;font-family:var(--font-mono);color:var(--text-secondary);line-height:1.6;margin-bottom:12px;white-space:pre-wrap;word-break:break-word;border:0.5px solid var(--border);}
+.cost-panel{background:var(--surface-1);border-radius:10px;padding:14px 16px;margin-bottom:12px;}
+.cost-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;}
 .cost-title{font-size:12px;font-weight:500;color:var(--text-secondary);display:flex;align-items:center;gap:5px;}
-.model-select{font-size:12px;border:0.5px solid var(--border);border-radius:6px;padding:3px 8px;background:var(--surface-2);color:var(--text-primary);cursor:pointer;}
-.cost-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:10px;}
-.cost-cell{background:var(--surface-2);border-radius:6px;padding:8px 10px;}
-.cost-cell-label{font-size:11px;color:var(--text-muted);margin-bottom:3px;}
-.cost-cell-val{font-size:15px;font-weight:500;color:var(--text-primary);}
+.model-select{font-size:12px;border:0.5px solid var(--border-strong);border-radius:6px;padding:4px 10px;background:var(--surface-2);color:var(--text-primary);cursor:pointer;font-family:var(--font-sans);}
+.cost-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:12px;}
+.cost-cell{background:var(--surface-2);border-radius:6px;padding:10px 12px;border:0.5px solid var(--border);}
+.cost-cell-label{font-size:11px;color:var(--text-muted);margin-bottom:4px;}
+.cost-cell-val{font-size:16px;font-weight:500;}
 .cost-cell-val.green{color:var(--text-success);}
 .cost-cell-val.amber{color:var(--text-warning);}
 .runs-row{display:flex;align-items:center;gap:10px;}
 .runs-label{font-size:12px;color:var(--text-secondary);white-space:nowrap;}
-.runs-row input[type=range]{flex:1;}
-.runs-val{font-size:12px;font-weight:500;color:var(--text-primary);min-width:80px;text-align:right;}
-.efficiency-bar{height:6px;border-radius:3px;background:var(--surface-2);margin-top:8px;overflow:hidden;}
+.runs-row input[type=range]{flex:1;accent-color:var(--fill-accent);}
+.runs-val{font-size:12px;font-weight:500;min-width:110px;text-align:right;color:var(--text-primary);}
+.efficiency-bar{height:5px;border-radius:3px;background:var(--border);margin-top:10px;overflow:hidden;}
 .efficiency-fill{height:100%;border-radius:3px;background:var(--fill-success);transition:width 0.2s;}
-
+.eff-label{font-size:11px;color:var(--text-muted);margin-top:5px;}
 .action-row{display:flex;gap:6px;flex-wrap:wrap;}
-.act-btn{font-size:12px;padding:5px 12px;border-radius:6px;border:0.5px solid var(--border-strong);background:transparent;color:var(--text-secondary);cursor:pointer;display:flex;align-items:center;gap:5px;}
+.act-btn{font-size:12px;padding:6px 14px;border-radius:6px;border:0.5px solid var(--border-strong);background:transparent;color:var(--text-secondary);cursor:pointer;display:flex;align-items:center;gap:5px;font-family:var(--font-sans);}
 .act-btn:hover{background:var(--surface-1);}
 .act-btn.primary{background:var(--fill-accent);color:var(--on-accent);border-color:transparent;}
 .act-btn.primary:hover{opacity:0.88;}
-.ai-output{margin-top:10px;background:var(--surface-1);border-radius:8px;padding:10px 12px;font-size:13px;color:var(--text-secondary);line-height:1.6;display:none;min-height:40px;}
+.ai-output{margin-top:12px;background:var(--surface-1);border-radius:var(--radius);padding:12px 14px;font-size:13px;color:var(--text-secondary);line-height:1.6;display:none;border:0.5px solid var(--border);}
 .ai-output.visible{display:block;}
-.ai-label{font-size:11px;font-weight:500;color:var(--text-accent);margin-bottom:5px;display:flex;align-items:center;gap:4px;}
-.stats-row{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-bottom:1.25rem;}
-.stat{background:var(--surface-1);border-radius:8px;padding:10px 12px;}
-.stat-val{font-size:18px;font-weight:500;color:var(--text-primary);}
-.stat-lbl{font-size:11px;color:var(--text-muted);margin-top:2px;}
+.ai-label{font-size:11px;font-weight:500;color:var(--text-accent);margin-bottom:6px;display:flex;align-items:center;gap:4px;}
+.empty{text-align:center;padding:3rem;color:var(--text-muted);font-size:14px;}
+.modal-bg{display:none;position:fixed;inset:0;background:rgba(0,0,0,0.5);z-index:100;align-items:center;justify-content:center;}
+.modal-bg.open{display:flex;}
+.modal{background:var(--surface-2);border-radius:14px;border:0.5px solid var(--border-strong);padding:1.75rem;width:min(560px,94vw);max-height:88vh;overflow-y:auto;}
+.modal-title{font-size:17px;font-weight:500;margin-bottom:1.25rem;}
+.form-row{margin-bottom:14px;}
+.form-label{font-size:12px;font-weight:500;color:var(--text-secondary);margin-bottom:6px;display:block;}
+.form-input{width:100%;border:0.5px solid var(--border-strong);border-radius:var(--radius);padding:9px 13px;font-size:13px;font-family:var(--font-sans);color:var(--text-primary);background:var(--surface-1);}
+.form-input:focus{outline:none;border-color:var(--border-accent);}
+textarea.form-input{min-height:90px;resize:vertical;font-family:var(--font-mono);}
+.modal-actions{display:flex;justify-content:flex-end;gap:8px;margin-top:1.25rem;}
+.cancel-btn{padding:8px 16px;border-radius:var(--radius);border:0.5px solid var(--border-strong);background:transparent;font-size:13px;color:var(--text-secondary);cursor:pointer;font-family:var(--font-sans);}
+.save-btn{padding:8px 18px;border-radius:var(--radius);border:none;background:var(--fill-accent);color:#fff;font-size:13px;font-weight:500;cursor:pointer;font-family:var(--font-sans);}
 .spinner{width:13px;height:13px;border:2px solid currentColor;border-top-color:transparent;border-radius:50%;animation:spin 0.7s linear infinite;display:inline-block;opacity:0.5;}
 @keyframes spin{to{transform:rotate(360deg);}}
-.modal-bg{display:none;position:fixed;inset:0;background:rgba(0,0,0,0.45);z-index:100;align-items:center;justify-content:center;}
-.modal-bg.open{display:flex;}
-.modal{background:var(--surface-2);border-radius:14px;border:0.5px solid var(--border);padding:1.5rem;width:min(520px,92vw);max-height:80vh;overflow-y:auto;}
-.modal-title{font-size:16px;font-weight:500;color:var(--text-primary);margin-bottom:1rem;}
-.form-row{margin-bottom:12px;}
-.form-label{font-size:12px;font-weight:500;color:var(--text-secondary);margin-bottom:5px;display:block;}
-.form-input{width:100%;border:0.5px solid var(--border);border-radius:8px;padding:8px 12px;font-size:13px;font-family:var(--font-sans);color:var(--text-primary);background:var(--surface-1);}
-.form-input:focus{outline:none;border-color:var(--border-accent);}
-textarea.form-input{min-height:80px;resize:vertical;font-family:var(--font-mono);}
-select.form-input{cursor:pointer;}
-.modal-actions{display:flex;justify-content:flex-end;gap:8px;margin-top:1rem;}
-.cancel-btn{padding:7px 14px;border-radius:8px;border:0.5px solid var(--border-strong);background:transparent;font-size:13px;color:var(--text-secondary);cursor:pointer;}
-.save-btn{padding:7px 16px;border-radius:8px;border:none;background:var(--fill-accent);color:var(--on-accent);font-size:13px;font-weight:500;cursor:pointer;}
-.empty{text-align:center;padding:2rem;color:var(--text-muted);font-size:13px;}
+.built-by{margin-top:2rem;padding:12px 16px;background:var(--surface-1);border-radius:var(--radius);display:flex;align-items:center;justify-content:space-between;}
+.built-by-name{font-size:13px;font-weight:500;}
+.built-by-sub{font-size:12px;color:var(--text-muted);margin-top:2px;}
 </style>
-
-<div class="app">
-<h2 class="sr-only">Assort Health internal prompt and skill library with per-asset token cost estimator</h2>
-<div class="top-bar">
-  <div>
-    <div class="app-title">Prompt and skill library</div>
-    <div class="app-sub">Centralized AI assets for Assort teams</div>
+</head>
+<body>
+<div class="container">
+  <div class="top-bar">
+    <div>
+      <div class="app-title">Prompt and skill library</div>
+      <div class="app-sub">Centralized AI assets for Assort teams</div>
+    </div>
+    <button class="add-btn" onclick="openModal()"><i class="ti ti-plus"></i> Add asset</button>
   </div>
-  <button class="add-btn" onclick="openModal()"><i class="ti ti-plus" aria-hidden="true"></i> Add asset</button>
-</div>
-
-<div class="stats-row" id="stats-row"></div>
-
-<div class="toolbar">
-  <input type="text" id="search" placeholder="Search prompts and skills..." oninput="render()">
-</div>
-<div class="filter-row" id="filter-row"></div>
-<div id="library-list"></div>
+  <div class="stats-row" id="stats-row"></div>
+  <div class="toolbar"><input type="text" id="search" placeholder="Search prompts and skills..." oninput="render()"></div>
+  <div class="filter-row" id="filter-row"></div>
+  <div id="library-list"></div>
+  <div class="built-by">
+    <div>
+      <div class="built-by-name">Bryan Engel</div>
+      <div class="built-by-sub">AI/ML Integration Specialist &middot; Signal Over Noise AI</div>
+    </div>
+    <i class="ti ti-sparkles" style="font-size:20px;color:var(--text-muted);"></i>
+  </div>
 </div>
 
 <div class="modal-bg" id="modal-bg" onclick="closeBg(event)">
@@ -124,141 +163,102 @@ select.form-input{cursor:pointer;}
 </div>
 
 <script>
-const MODELS = {
-  'Haiku 4.5':   {inputPer1M:0.80,  outputPer1M:4.00,  label:'Haiku 4.5'},
-  'Sonnet 4.6':  {inputPer1M:3.00,  outputPer1M:15.00, label:'Sonnet 4.6'},
-  'Opus 4.6':    {inputPer1M:15.00, outputPer1M:75.00, label:'Opus 4.6'},
+const MODELS={
+  'Haiku 4.5':{inputPer1M:0.80,outputPer1M:4.00},
+  'Sonnet 4.6':{inputPer1M:3.00,outputPer1M:15.00},
+  'Opus 4.6':{inputPer1M:15.00,outputPer1M:75.00},
 };
-
 const DEPT_ICON={GTM:'ti-trending-up','Post-Sales':'ti-headset',Product:'ti-bulb',Engineering:'ti-code','All teams':'ti-building'};
 const DEPT_CLS={GTM:'gtm','Post-Sales':'post',Product:'product',Engineering:'eng','All teams':'all'};
 const DEPT_BADGE={GTM:'dept-gtm','Post-Sales':'dept-post',Product:'dept-product',Engineering:'dept-eng','All teams':'dept-all'};
 
-function countTokens(text){
-  return Math.round((text||'').length/3.8);
-}
+function countTokens(t){return Math.round((t||'').length/3.8);}
 
 let assets=[
-  {id:1,name:'Discovery call summarizer',dept:'GTM',desc:'Turns raw call transcripts into structured summaries with pain points, next steps, and champion signals.',prompt:`You are an expert sales analyst. Review the following discovery call transcript and return:\n\n1. Pain points (bullet list, ranked by urgency)\n2. Champion signals (who in the call showed internal motivation to buy)\n3. Next steps (specific, time-bound)\n4. Deal risk flags (anything that could stall the deal)\n\nKeep each section under 5 bullets. Be direct.\n\nTranscript:\n{{transcript}}`,uses:47,avgInputExtra:1800,avgOutput:400},
-  {id:2,name:'Onboarding gap detector',dept:'Post-Sales',desc:'Analyzes onboarding notes and flags patients or workflows at risk of drop-off before go-live.',prompt:`You are a healthcare customer success expert. Review the following onboarding notes and identify:\n\n1. At-risk items\n2. Stakeholder gaps\n3. Timeline risk\n4. Recommended actions\n\nOnboarding notes:\n{{notes}}`,uses:31,avgInputExtra:1200,avgOutput:350},
-  {id:3,name:'PRD first-draft generator',dept:'Product',desc:'Converts a feature brief or Slack thread into a structured PRD with success metrics and edge cases.',prompt:`You are a senior product manager at a healthcare AI company. Convert the following feature brief into a PRD with these sections:\n\n- Problem statement\n- Success metrics\n- User stories\n- Edge cases and failure modes\n- Out of scope\n\nBrief:\n{{brief}}`,uses:22,avgInputExtra:800,avgOutput:700},
-  {id:4,name:'Incident triage classifier',dept:'Engineering',desc:'Classifies inbound incident reports by severity, affected system, and suggested owner.',prompt:`You are an on-call engineer. Classify the following incident report and return JSON only:\n{\n  "severity": "P0|P1|P2|P3",\n  "affected_system": "<system name>",\n  "likely_owner": "<team or person>",\n  "summary": "<one sentence>",\n  "immediate_action": "<what to do right now>"\n}\n\nIncident report:\n{{report}}`,uses:18,avgInputExtra:400,avgOutput:120},
-  {id:5,name:'AI use case intake form',dept:'All teams',desc:'Structured prompt for any team member to submit a new AI automation idea for the roadmap.',prompt:`Fill out the following to submit an AI automation idea:\n\nWhat is the current process?\nHow often does it happen?\nHow many people are involved?\nWhat is the biggest pain point?\nWhat would success look like?\nAny data or systems involved?`,uses:64,avgInputExtra:600,avgOutput:500},
+  {id:1,name:'Discovery call summarizer',dept:'GTM',desc:'Turns raw call transcripts into structured summaries with pain points, next steps, and champion signals.',prompt:'You are an expert sales analyst. Review the following discovery call transcript and return:\n\n1. Pain points (bullet list, ranked by urgency)\n2. Champion signals (who in the call showed internal motivation to buy)\n3. Next steps (specific, time-bound)\n4. Deal risk flags (anything that could stall the deal)\n\nKeep each section under 5 bullets. Be direct.\n\nTranscript:\n{{transcript}}',uses:47,avgInputExtra:1800,avgOutput:400},
+  {id:2,name:'Onboarding gap detector',dept:'Post-Sales',desc:'Analyzes onboarding notes and flags patients or workflows at risk of drop-off before go-live.',prompt:'You are a healthcare customer success expert. Review the following onboarding notes and identify:\n\n1. At-risk items\n2. Stakeholder gaps\n3. Timeline risk\n4. Recommended actions\n\nOnboarding notes:\n{{notes}}',uses:31,avgInputExtra:1200,avgOutput:350},
+  {id:3,name:'PRD first-draft generator',dept:'Product',desc:'Converts a feature brief or Slack thread into a structured PRD with success metrics and edge cases.',prompt:'You are a senior product manager at a healthcare AI company. Convert the following feature brief into a PRD with these sections:\n\n- Problem statement\n- Success metrics\n- User stories\n- Edge cases and failure modes\n- Out of scope\n\nBrief:\n{{brief}}',uses:22,avgInputExtra:800,avgOutput:700},
+  {id:4,name:'Incident triage classifier',dept:'Engineering',desc:'Classifies inbound incident reports by severity, affected system, and suggested owner.',prompt:'You are an on-call engineer. Classify the following incident report and return JSON only:\n{\n  "severity": "P0|P1|P2|P3",\n  "affected_system": "<system name>",\n  "likely_owner": "<team or person>",\n  "summary": "<one sentence>",\n  "immediate_action": "<what to do right now>"\n}\n\nIncident report:\n{{report}}',uses:18,avgInputExtra:400,avgOutput:120},
+  {id:5,name:'AI use case intake form',dept:'All teams',desc:'Structured prompt for any team member to submit a new AI automation idea for the roadmap.',prompt:'Fill out the following to submit an AI automation idea:\n\nWhat is the current process?\nHow often does it happen?\nHow many people are involved?\nWhat is the biggest pain point?\nWhat would success look like?\nAny data or systems involved?',uses:64,avgInputExtra:600,avgOutput:500},
 ];
-let nextId=6;
-let activeFilter='All';
-let expandedId=null;
-let runsMap={};
-let modelMap={};
-let aiOutputs={};
+let nextId=6,activeFilter='All',expandedId=null,runsMap={},modelMap={},aiOutputs={};
 
 function totalMonthlyCost(){
-  let total=0;
-  assets.forEach(a=>{
-    const model=modelMap[a.id]||'Sonnet 4.6';
-    const m=MODELS[model];
-    const runs=runsMap[a.id]||a.uses;
-    const promptTokens=countTokens(a.prompt);
-    const inputT=promptTokens+a.avgInputExtra;
-    const outputT=a.avgOutput;
-    total+=runs*((inputT/1000000)*m.inputPer1M+(outputT/1000000)*m.outputPer1M);
-  });
-  return total;
+  return assets.reduce((s,a)=>{
+    const m=MODELS[modelMap[a.id]||'Sonnet 4.6'];
+    const runs=runsMap[a.id]!=null?runsMap[a.id]:a.uses;
+    const iT=countTokens(a.prompt)+a.avgInputExtra;
+    return s+runs*((iT/1e6)*m.inputPer1M+(a.avgOutput/1e6)*m.outputPer1M);
+  },0);
 }
 
 function render(){
   const q=document.getElementById('search').value.toLowerCase();
-  const filtered=assets.filter(a=>{
-    const dOk=activeFilter==='All'||a.dept===activeFilter;
-    const qOk=!q||a.name.toLowerCase().includes(q)||a.desc.toLowerCase().includes(q);
-    return dOk&&qOk;
-  });
-  const totalUses=assets.reduce((s,a)=>s+a.uses,0);
-  const deptCount=new Set(assets.map(a=>a.dept)).size;
-  const monthlyCost=totalMonthlyCost();
+  const filtered=assets.filter(a=>(activeFilter==='All'||a.dept===activeFilter)&&(!q||a.name.toLowerCase().includes(q)||a.desc.toLowerCase().includes(q)));
+  const mc=totalMonthlyCost();
   document.getElementById('stats-row').innerHTML=`
     <div class="stat"><div class="stat-val">${assets.length}</div><div class="stat-lbl">Total assets</div></div>
-    <div class="stat"><div class="stat-val">${deptCount}</div><div class="stat-lbl">Departments</div></div>
-    <div class="stat"><div class="stat-val">${totalUses}</div><div class="stat-lbl">Total uses</div></div>
-    <div class="stat"><div class="stat-val">$${monthlyCost.toFixed(2)}</div><div class="stat-lbl">Est. mo. cost</div></div>`;
-
-  const fr=document.getElementById('filter-row');
+    <div class="stat"><div class="stat-val">${new Set(assets.map(a=>a.dept)).size}</div><div class="stat-lbl">Departments</div></div>
+    <div class="stat"><div class="stat-val">${assets.reduce((s,a)=>s+a.uses,0)}</div><div class="stat-lbl">Total uses</div></div>
+    <div class="stat"><div class="stat-val">$${mc.toFixed(2)}</div><div class="stat-lbl">Est. mo. cost</div></div>`;
   const depts=['All',...new Set(assets.map(a=>a.dept))];
-  fr.innerHTML=depts.map(d=>`<span class="filter-chip${d===activeFilter?' active':''}" onclick="setFilter('${d}')">${d}</span>`).join('');
-
+  document.getElementById('filter-row').innerHTML=depts.map(d=>`<span class="filter-chip${d===activeFilter?' active':''}" onclick="setFilter('${d}')">${d}</span>`).join('');
   const list=document.getElementById('library-list');
   if(!filtered.length){list.innerHTML='<div class="empty">No assets match your search.</div>';return;}
   list.innerHTML=filtered.map(a=>{
-    const cls=DEPT_CLS[a.dept]||'all';
-    const badge=DEPT_BADGE[a.dept]||'dept-all';
-    const icon=DEPT_ICON[a.dept]||'ti-file';
-    const isExp=expandedId===a.id;
     const model=modelMap[a.id]||'Sonnet 4.6';
     const m=MODELS[model];
     const runs=runsMap[a.id]!=null?runsMap[a.id]:a.uses;
-    const promptTokens=countTokens(a.prompt);
-    const inputT=promptTokens+a.avgInputExtra;
-    const outputT=a.avgOutput;
-    const costPerRun=((inputT/1000000)*m.inputPer1M)+((outputT/1000000)*m.outputPer1M);
-    const monthlyEst=runs*costPerRun;
-    const haikuCost=runs*(((inputT/1000000)*0.80)+((outputT/1000000)*4.00));
-    const savings=monthlyEst-haikuCost;
-    const efficiencyPct=Math.round((1-(haikuCost/Math.max(monthlyEst,0.0001)))*100);
-    const costColor=monthlyEst<1?'green':monthlyEst<5?'amber':'';
-    const savedColor=savings>0?'amber':'green';
-    const aoKey='ai-'+a.id;
-    const savedHtml=aiOutputs[aoKey]?`<div class="ai-output visible" id="${aoKey}"><div class="ai-label"><i class="ti ti-sparkles" aria-hidden="true"></i> Claude</div><div id="ai-text-${a.id}">${aiOutputs[aoKey]}</div></div>`:`<div class="ai-output" id="${aoKey}"><div class="ai-label"><i class="ti ti-sparkles" aria-hidden="true"></i> Claude</div><div id="ai-text-${a.id}"></div></div>`;
+    const iT=countTokens(a.prompt)+a.avgInputExtra;
+    const cpr=((iT/1e6)*m.inputPer1M)+((a.avgOutput/1e6)*m.outputPer1M);
+    const me=runs*cpr;
+    const hc=runs*(((iT/1e6)*0.80)+((a.avgOutput/1e6)*4.00));
+    const sav=me-hc;
+    const ep=Math.round((1-(hc/Math.max(me,0.0001)))*100);
+    const ao=aiOutputs['ai-'+a.id]||'';
+    const isExp=expandedId===a.id;
     return `<div class="card${isExp?' expanded':''}" id="card-${a.id}" onclick="toggleCard(${a.id})">
       <div class="card-header">
-        <div class="card-icon ${cls}"><i class="ti ${icon}" aria-hidden="true"></i></div>
+        <div class="card-icon ${DEPT_CLS[a.dept]||'all'}"><i class="ti ${DEPT_ICON[a.dept]||'ti-file'}"></i></div>
         <div class="card-meta">
           <div class="card-name">${a.name}</div>
           <div class="card-desc">${a.desc}</div>
         </div>
         <div class="card-right">
-          <span class="dept-badge ${badge}">${a.dept}</span>
+          <span class="dept-badge ${DEPT_BADGE[a.dept]||'dept-all'}">${a.dept}</span>
           <span class="uses">${a.uses} uses</span>
         </div>
       </div>
       <div class="card-body">
         <div class="prompt-block">${escHtml(a.prompt)}</div>
-
         <div class="cost-panel">
           <div class="cost-header">
-            <span class="cost-title"><i class="ti ti-coin" aria-hidden="true"></i> Cost estimate</span>
+            <span class="cost-title"><i class="ti ti-coin"></i> Cost estimate</span>
             <select class="model-select" id="model-${a.id}" onclick="event.stopPropagation()" onchange="setModel(${a.id},this.value)">
               ${Object.keys(MODELS).map(k=>`<option${k===model?' selected':''}>${k}</option>`).join('')}
             </select>
           </div>
           <div class="cost-grid">
-            <div class="cost-cell">
-              <div class="cost-cell-label">Cost per run</div>
-              <div class="cost-cell-val">$${costPerRun<0.001?costPerRun.toFixed(5):costPerRun.toFixed(4)}</div>
-            </div>
-            <div class="cost-cell">
-              <div class="cost-cell-label">Monthly est.</div>
-              <div class="cost-cell-val ${costColor}">$${monthlyEst.toFixed(2)}</div>
-            </div>
-            <div class="cost-cell">
-              <div class="cost-cell-label">vs. Haiku 4.5</div>
-              <div class="cost-cell-val ${savedColor}">${savings>0?'+$'+savings.toFixed(2):'-$'+Math.abs(savings).toFixed(2)}</div>
-            </div>
+            <div class="cost-cell"><div class="cost-cell-label">Cost per run</div><div class="cost-cell-val">$${cpr<0.001?cpr.toFixed(5):cpr.toFixed(4)}</div></div>
+            <div class="cost-cell"><div class="cost-cell-label">Monthly est.</div><div class="cost-cell-val ${me<1?'green':me<5?'amber':''}">$${me.toFixed(2)}</div></div>
+            <div class="cost-cell"><div class="cost-cell-label">vs. Haiku 4.5</div><div class="cost-cell-val ${sav>0?'amber':'green'}">${sav>0?'+':'−'}$${Math.abs(sav).toFixed(2)}</div></div>
           </div>
           <div class="runs-row">
             <span class="runs-label">Runs/month</span>
             <input type="range" min="1" max="500" step="1" value="${runs}" onclick="event.stopPropagation()" oninput="setRuns(${a.id},this.value)">
-            <span class="runs-val">${runs} runs &middot; $${monthlyEst.toFixed(2)}</span>
+            <span class="runs-val">${runs} runs &middot; $${me.toFixed(2)}</span>
           </div>
-          ${model!=='Haiku 4.5'?`<div class="efficiency-bar"><div class="efficiency-fill" style="width:${Math.max(0,Math.min(100,efficiencyPct))}%"></div></div>
-          <div style="font-size:11px;color:var(--text-muted);margin-top:4px;">Switching to Haiku 4.5 saves ${efficiencyPct}% on this asset</div>`:'<div style="font-size:11px;color:var(--text-success);margin-top:8px;">Running on lowest-cost model</div>'}
+          ${model!=='Haiku 4.5'?`<div class="efficiency-bar"><div class="efficiency-fill" style="width:${Math.max(0,Math.min(100,ep))}%"></div></div><div class="eff-label">Switching to Haiku 4.5 saves ${ep}% on this asset</div>`:'<div class="eff-label" style="color:var(--text-success);margin-top:8px;">Running on lowest-cost model</div>'}
         </div>
-
         <div class="action-row">
-          <button class="act-btn primary" onclick="event.stopPropagation();testPrompt(${a.id})"><i class="ti ti-player-play" aria-hidden="true"></i> Test with Claude</button>
-          <button class="act-btn" onclick="event.stopPropagation();copyPrompt(${a.id})"><i class="ti ti-copy" aria-hidden="true"></i> Copy</button>
-          <button class="act-btn" onclick="event.stopPropagation();improvePrompt(${a.id})"><i class="ti ti-sparkles" aria-hidden="true"></i> Improve</button>
+          <button class="act-btn primary" onclick="event.stopPropagation();testPrompt(${a.id})"><i class="ti ti-player-play"></i> Test with Claude</button>
+          <button class="act-btn" onclick="event.stopPropagation();copyPrompt(${a.id})" id="copy-btn-${a.id}"><i class="ti ti-copy"></i> Copy</button>
+          <button class="act-btn" onclick="event.stopPropagation();improvePrompt(${a.id})"><i class="ti ti-sparkles"></i> Improve</button>
         </div>
-        ${savedHtml}
+        <div class="ai-output${ao?' visible':''}" id="ai-${a.id}">
+          <div class="ai-label"><i class="ti ti-sparkles"></i> Claude</div>
+          <div id="ai-text-${a.id}">${ao}</div>
+        </div>
       </div>
     </div>`;
   }).join('');
@@ -267,72 +267,62 @@ function render(){
 function escHtml(s){return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');}
 function setFilter(d){activeFilter=d;render();}
 function toggleCard(id){expandedId=expandedId===id?null:id;render();}
-
 function setModel(id,val){modelMap[id]=val;render();}
 function setRuns(id,val){runsMap[id]=parseInt(val);render();}
 
 function copyPrompt(id){
   const a=assets.find(x=>x.id===id);
-  if(a)navigator.clipboard.writeText(a.prompt).catch(()=>{});
+  if(!a)return;
+  navigator.clipboard.writeText(a.prompt).catch(()=>{});
+  const btn=document.getElementById('copy-btn-'+id);
+  if(btn){btn.innerHTML='<i class="ti ti-check"></i> Copied';setTimeout(()=>{btn.innerHTML='<i class="ti ti-copy"></i> Copy';},1500);}
 }
 
-const SAMPLES={
-  1:'[Call with Mercy Health, Dr. Kim and ops lead Sarah. Pain: fax-based referrals taking 5 days. Sarah said she is the internal champion. Budget approved Q3.]',
-  2:'[Patient onboarding: demographics done, insurance not verified, portal login not sent, IT contact missing, go-live in 9 days]',
-  3:'[Allow providers to bulk-schedule follow-up calls via AI from the patient portal. Requested by 3 customers.]',
-  4:'[AI triage agent returning 503 errors on intake form submissions since 14:32 UTC. Affecting UCSF and Stanford accounts.]',
-  5:'[Team: Post-Sales. Process: manually emailing patients who missed appointments. Happens ~200x/day per client.]'
-};
+const SAMPLES={1:'[Call with Mercy Health, Dr. Kim and ops lead Sarah. Pain: fax-based referrals taking 5 days. Budget approved Q3.]',2:'[Patient onboarding: demographics done, insurance not verified, portal login not sent, go-live in 9 days]',3:'[Allow providers to bulk-schedule follow-up calls via AI from the patient portal.]',4:'[AI triage agent returning 503 errors since 14:32 UTC. Affecting UCSF and Stanford accounts.]',5:'[Team: Post-Sales. Process: manually emailing patients who missed appointments. 200x/day.]'};
 
-async function callClaude(id,systemPrompt,userContent){
-  const key='ai-'+id;
-  const out=document.getElementById(key);
+async function callClaude(id,prompt){
+  const out=document.getElementById('ai-'+id);
   const txt=document.getElementById('ai-text-'+id);
-  if(out){out.classList.add('visible');}
-  if(txt){txt.innerHTML='<div class="spinner"></div>';}
+  out.classList.add('visible');
+  txt.innerHTML='<div class="spinner"></div>';
   const model=modelMap[id]||'Sonnet 4.6';
   const modelStr=model==='Haiku 4.5'?'claude-haiku-4-5-20251001':'claude-sonnet-4-6';
   try{
-    const resp=await fetch('https://api.anthropic.com/v1/messages',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({model:modelStr,max_tokens:1000,messages:[{role:'user',content:systemPrompt+'\n\n'+userContent}]})});
-    const data=await resp.json();
-    const text=data.content.map(i=>i.text||'').join('').replace(/\*\*(.*?)\*\*/g,'<strong>$1</strong>').replace(/\n/g,'<br>');
-    if(txt){txt.innerHTML=text;}
-    aiOutputs[key]=text;
+    const r=await fetch('https://api.anthropic.com/v1/messages',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({model:modelStr,max_tokens:1000,messages:[{role:'user',content:prompt}]})});
+    const d=await r.json();
+    const text=d.content.map(i=>i.text||'').join('').replace(/\*\*(.*?)\*\*/g,'<strong>$1</strong>').replace(/\n/g,'<br>');
+    txt.innerHTML=text;
+    aiOutputs['ai-'+id]=text;
     const a=assets.find(x=>x.id===id);
     if(a){a.uses++;render();}
-  }catch(e){
-    if(txt){txt.textContent='Error: '+e.message;}
-  }
+  }catch(e){txt.textContent='Error: '+e.message;}
 }
 
 function testPrompt(id){
   const a=assets.find(x=>x.id===id);
   if(!a)return;
-  const filled=a.prompt.replace(/\{\{[^}]+\}\}/g,SAMPLES[id]||'[Sample input]');
-  callClaude(id,filled,'');
+  callClaude(id,a.prompt.replace(/\{\{[^}]+\}\}/g,SAMPLES[id]||'[Sample input]'));
 }
-
 function improvePrompt(id){
   const a=assets.find(x=>x.id===id);
   if(!a)return;
-  callClaude(id,`You are a prompt engineering expert. Give 3 specific, actionable suggestions to improve this prompt's output quality and token efficiency. Be concise.\n\nPrompt:\n${a.prompt}`,'');
+  callClaude(id,`You are a prompt engineering expert. Give 3 specific, actionable suggestions to improve this prompt's output quality and token efficiency. Be concise.\n\nPrompt:\n${a.prompt}`);
 }
 
 function openModal(){document.getElementById('modal-bg').classList.add('open');}
-function closeModal(){document.getElementById('modal-bg').classList.remove('open');['f-name','f-desc','f-prompt'].forEach(i=>document.getElementById(i).value='');}
+function closeModal(){document.getElementById('modal-bg').classList.remove('open');['f-name','f-desc','f-prompt'].forEach(i=>{document.getElementById(i).value='';});}
 function closeBg(e){if(e.target===document.getElementById('modal-bg'))closeModal();}
-
 function saveAsset(){
   const name=document.getElementById('f-name').value.trim();
   const dept=document.getElementById('f-dept').value;
   const desc=document.getElementById('f-desc').value.trim();
   const prompt=document.getElementById('f-prompt').value.trim();
   if(!name||!prompt)return;
-  const promptLen=countTokens(prompt);
   assets.push({id:nextId++,name,dept,desc:desc||'No description.',prompt,uses:0,avgInputExtra:500,avgOutput:400});
-  closeModal();
-  render();
+  closeModal();render();
 }
 
 render();
 </script>
+</body>
+</html>
